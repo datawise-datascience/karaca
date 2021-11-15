@@ -6,4 +6,4 @@ streamlit
 openpyxl
 plotly
 datetime
-dateutil
+python-dateutil
