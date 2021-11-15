@@ -7,4 +7,3 @@ openpyxl
 plotly
 datetime
 python-dateutil
-pathlib
