@@ -9,7 +9,6 @@ import openpyxl
 import plotly.express as px
 import datetime as dt
 from dateutil.relativedelta import relativedelta
-from pathlib import Path
 
 #endregion
 
@@ -30,11 +29,10 @@ def check_trends(geo,time_data):
 
 #region Getting Trends
 keyword_dict=dict()
-keyword_file = Path(__file__).parents[1] / 'keyword ürün grupları_DEU.xlsx'
-xl = pd.ExcelFile(keyword_file)
+xl = pd.ExcelFile("keyword ürün grupları_DEU.xlsx")
 
 for names in xl.sheet_names:
-    df=pd.read_excel(keyword_file,sheet_name=names)
+    df=pd.read_excel("keyword ürün grupları_DEU.xlsx",sheet_name=names)
     keyword_dict[names]=list(df[df.columns[0]].values)
 
 #endregion
@@ -214,7 +212,7 @@ if grafik_turu=="Evet":
             keyword=tum_kelimeler
             df4=check_trends(geo=geo, time_data=time_data)[keyword]
         placeholder.line_chart(data=df4, width=600, height=400)
-    
+
 
 else:
     kelime_gruplari = st.sidebar.multiselect("Kelime Grubu Seçiniz", list(keyword_dict.keys()))
