@@ -30,7 +30,7 @@ def check_trends(geo,time_data):
 
 #region Getting Trends
 keyword_dict=dict()
-keyword_file = Path(__file__).parents[0] / '/keyword ürün grupları_DEU.xlsx'
+keyword_file = Path(__file__).parents[0] / 'karaca/keyword ürün grupları_DEU.xlsx'
 xl = pd.ExcelFile(keyword_file)
 
 for names in xl.sheet_names:
