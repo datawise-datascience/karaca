@@ -9,6 +9,7 @@ import openpyxl
 import plotly.express as px
 import datetime as dt
 from dateutil.relativedelta import relativedelta
+from pathlib import Path
 
 #endregion
 
@@ -29,10 +30,11 @@ def check_trends(geo,time_data):
 
 #region Getting Trends
 keyword_dict=dict()
-xl = pd.ExcelFile("keyword ürün grupları_DEU.xlsx")
+keyword_file = Path(__file__).parents[1] / 'PycharmProjects/KaracaDashboard/keyword ürün grupları_DEU.xlsx'
+xl = pd.ExcelFile(keyword_file)
 
 for names in xl.sheet_names:
-    df=pd.read_excel("keyword ürün grupları_DEU.xlsx",sheet_name=names)
+    df=pd.read_excel(keyword_file,sheet_name=names)
     keyword_dict[names]=list(df[df.columns[0]].values)
 
 #endregion
