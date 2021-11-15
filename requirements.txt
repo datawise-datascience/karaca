@@ -1,0 +1,9 @@
+pandas
+seaborn
+matplotlib
+pytrends
+streamlit
+openpyxl
+plotly
+datetime
+dateutil
