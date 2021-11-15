@@ -30,7 +30,7 @@ def check_trends(geo,time_data):
 
 #region Getting Trends
 keyword_dict=dict()
-keyword_file = Path(__file__).parents[0] / 'keyword ürün grupları_DEU.XLSX'
+keyword_file = Path(__file__).parents[1] / 'KaracaDashboard/keyword ürün grupları_DEU.xlsx'
 xl = pd.ExcelFile(keyword_file)
 
 for names in xl.sheet_names:
@@ -176,45 +176,47 @@ if grafik_turu=="Evet":
         pass
     gorsel=st.sidebar.button("Görseli Üret")
     if gorsel:
-        if len(tum_kelimeler)>1:
-            kw = dict()
-            for item in tum_kelimeler:
-                keyword_sabit = tum_kelimeler[0]
-                keyword_list = []
-                keyword_list.insert(0, keyword_sabit)
-                keyword_list.insert(1, item)
+        try:
+            if len(tum_kelimeler)>1:
+                kw = dict()
+                for item in tum_kelimeler:
+                    keyword_sabit = tum_kelimeler[0]
+                    keyword_list = []
+                    keyword_list.insert(0, keyword_sabit)
+                    keyword_list.insert(1, item)
+                    try:
+                        keyword = keyword_list
+                        kw[item] = check_trends(geo=geo, time_data=time_data)[keyword]
+                    except:
+                        continue
+                dfk = pd.DataFrame()
+                df1 = kw[list(kw.keys())[0]]
+                dfk = df1
+                for i in range(1, len(list(kw.keys()))):
+                    df2 = kw[list(kw.keys())[i]]
+                    fark = df1[keyword_sabit].mean() / df2[keyword_sabit].mean()
+                    df2 = df2 * fark
+                    dfk = dfk.merge(df2, how="inner", left_index=True, right_index=True)
+                    kw[list(kw.keys())[i]] = df2
+
                 try:
-                    keyword = keyword_list
-                    kw[item] = check_trends(geo=geo, time_data=time_data)[keyword]
+                    dfk.drop(columns=[keyword_sabit + "_y"], inplace=True)
                 except:
-                    continue
-            dfk = pd.DataFrame()
-            df1 = kw[list(kw.keys())[0]]
-            dfk = df1
-            for i in range(1, len(list(kw.keys()))):
-                df2 = kw[list(kw.keys())[i]]
-                fark = df1[keyword_sabit].mean() / df2[keyword_sabit].mean()
-                df2 = df2 * fark
-                dfk = dfk.merge(df2, how="inner", left_index=True, right_index=True)
-                kw[list(kw.keys())[i]] = df2
+                    pass
+                try:
+                    dfk = dfk.rename(columns={keyword_sabit + "_x": keyword_sabit})
+                except:
+                    pass
 
-            try:
-                dfk.drop(columns=[keyword_sabit + "_y"], inplace=True)
-            except:
-                pass
-            try:
-                dfk = dfk.rename(columns={keyword_sabit + "_x": keyword_sabit})
-            except:
-                pass
-
-            df4 = (dfk - dfk.min().min()) / (dfk.max().max() - dfk.min().min())
-            df4 = df4 * (100 - dfk.min().min()) + dfk.min().min()
-            fig, ax = plt.subplots(figsize=(16, 4))
-        else:
-            keyword=tum_kelimeler
-            df4=check_trends(geo=geo, time_data=time_data)[keyword]
-        placeholder.line_chart(data=df4, width=600, height=400)
-
+                df4 = (dfk - dfk.min().min()) / (dfk.max().max() - dfk.min().min())
+                df4 = df4 * (100 - dfk.min().min()) + dfk.min().min()
+                fig, ax = plt.subplots(figsize=(16, 4))
+            else:
+                keyword=tum_kelimeler
+                df4=check_trends(geo=geo, time_data=time_data)[keyword]
+            placeholder.line_chart(data=df4, width=600, height=400)
+        except:
+            placeholder.error("Google aratmaları yeterli sayıda olmadığı için veriye ulaşılamadı.")
 
 else:
     kelime_gruplari = st.sidebar.multiselect("Kelime Grubu Seçiniz", list(keyword_dict.keys()))
@@ -233,42 +235,45 @@ else:
         pass
     gorsel = st.sidebar.button("Görseli Üret")
     if gorsel:
-        if len(tum_kelimeler) > 1:
-            kw = dict()
-            for item in tum_kelimeler:
-                keyword_sabit = tum_kelimeler[0]
-                keyword_list = []
-                keyword_list.insert(0, keyword_sabit)
-                keyword_list.insert(1, item)
+        try:
+            if len(tum_kelimeler) > 1:
+                kw = dict()
+                for item in tum_kelimeler:
+                    keyword_sabit = tum_kelimeler[0]
+                    keyword_list = []
+                    keyword_list.insert(0, keyword_sabit)
+                    keyword_list.insert(1, item)
+                    try:
+                        keyword = keyword_list
+                        kw[item] = check_trends(geo=geo, time_data=time_data)[keyword]
+                    except:
+                        continue
+                dfk = pd.DataFrame()
+                df1 = kw[list(kw.keys())[0]]
+                dfk = df1
+                for i in range(1, len(list(kw.keys()))):
+                    df2 = kw[list(kw.keys())[i]]
+                    fark = df1[keyword_sabit].mean() / df2[keyword_sabit].mean()
+                    df2 = df2 * fark
+                    dfk = dfk.merge(df2, how="inner", left_index=True, right_index=True)
+                    kw[list(kw.keys())[i]] = df2
+
                 try:
-                    keyword = keyword_list
-                    kw[item] = check_trends(geo=geo, time_data=time_data)[keyword]
+                    dfk.drop(columns=[keyword_sabit + "_y"], inplace=True)
                 except:
-                    continue
-            dfk = pd.DataFrame()
-            df1 = kw[list(kw.keys())[0]]
-            dfk = df1
-            for i in range(1, len(list(kw.keys()))):
-                df2 = kw[list(kw.keys())[i]]
-                fark = df1[keyword_sabit].mean() / df2[keyword_sabit].mean()
-                df2 = df2 * fark
-                dfk = dfk.merge(df2, how="inner", left_index=True, right_index=True)
-                kw[list(kw.keys())[i]] = df2
+                    pass
+                try:
+                    dfk = dfk.rename(columns={keyword_sabit + "_x": keyword_sabit})
+                except:
+                    pass
 
-            try:
-                dfk.drop(columns=[keyword_sabit + "_y"], inplace=True)
-            except:
-                pass
-            try:
-                dfk = dfk.rename(columns={keyword_sabit + "_x": keyword_sabit})
-            except:
-                pass
-
-            df4 = (dfk - dfk.min().min()) / (dfk.max().max() - dfk.min().min())
-            df4 = df4 * (100 - dfk.min().min()) + dfk.min().min()
-            fig, ax = plt.subplots(figsize=(16, 4))
-        else:
-            keyword = tum_kelimeler
-            df4 = check_trends(geo=geo, time_data=time_data)[keyword]
-        placeholder.line_chart(data=df4, width=600, height=400)
+                df4 = (dfk - dfk.min().min()) / (dfk.max().max() - dfk.min().min())
+                df4 = df4 * (100 - dfk.min().min()) + dfk.min().min()
+                fig, ax = plt.subplots(figsize=(16, 4))
+            else:
+                keyword = tum_kelimeler
+                df4 = check_trends(geo=geo, time_data=time_data)[keyword]
+            placeholder.line_chart(data=df4, width=600, height=400)
+        except:
+            placeholder.error("Google aratmaları yeterli sayıda olmadığı için veriye ulaşılamadı.")
 #endregion
