@@ -44,6 +44,13 @@ for names in xl.sheet_names:
 #Logo ve başlığı oluşturuyoruz.
 st.image("karaca_logo2.PNG")
 st.markdown("<h1 style='text-align: center; color: black;'>Karaca Google Trends Dashboard</h1>", unsafe_allow_html=True)
+hide_streamlit_style = """
+            <style>
+            #MainMenu {visibility: hidden;}
+            footer {visibility: hidden;}
+            </style>
+            """
+st.markdown(hide_streamlit_style, unsafe_allow_html=True) 
 placeholder = st.empty()
 placeholder.info("Soldaki menüden kriterleri seçip 'Görseli Üret' butonuna tıklayınız.")
 #Sidebar
