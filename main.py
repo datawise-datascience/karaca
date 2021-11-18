@@ -165,7 +165,7 @@ if time=="Günlük":
         time_data = date_baslangic + " " + date
         print(date_baslangic)
 
-grafik_turu=st.sidebar.radio("Ürün Grupları Aramaya Dahil Olacak Mı?",("Evet","Hayır"))
+grafik_turu=st.sidebar.radio("Kelime Grupları Aramaya Dahil Olacak Mı?",("Evet","Hayır"))
 
 #Butona fonksiyon atıyoruz
 if grafik_turu=="Evet":
