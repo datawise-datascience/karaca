@@ -53,8 +53,11 @@ hide_streamlit_style = """
 st.markdown(hide_streamlit_style, unsafe_allow_html=True) 
 placeholder = st.empty()
 placeholder.info("Soldaki menüden kriterleri seçip 'Görseli Üret' butonuna tıklayınız.")
+
 #Sidebar
 #Yandaki menü kısmını oluşturuyoruz.
+
+st.sidebar.image("datawise.png", use_column_width=True)
 st.sidebar.write("Kriterler")
 
 ulke=st.sidebar.radio("Ülke",("Türkiye","Almanya"))
