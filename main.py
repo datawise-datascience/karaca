@@ -10,6 +10,7 @@ import plotly.express as px
 import datetime as dt
 from dateutil.relativedelta import relativedelta
 from pathlib import Path
+import datetime
 
 #endregion
 
@@ -93,86 +94,9 @@ else:
 date = str(year) + "-" + str(month) + "-" + str(day)
 
 
-time=st.sidebar.radio("Dönem",("Yıllık","Aylık","Haftalık","Günlük"))
-if time=="Yıllık":
-    yil_sayisi=st.sidebar.text_input("Son Kaç Yılı Görmek İstiyorsunuz?")
-    if yil_sayisi=="":
-        time_data="all"
-    else:
-        time_data_baslangic=str(year-int(yil_sayisi))+ "-" + str(month) + "-" + str(day)
-        if year-int(yil_sayisi)<2004:
-            st.warning('2004 yılından önce veri bulunmamaktadır.')
-        else:
-            time_data=time_data_baslangic+" "+date
-
-
-if time=="Aylık":
-    ay_sayisi=st.sidebar.text_input("Son Kaç Ayı Görmek İstiyorsunuz?")
-    if ay_sayisi=="":
-        time_data="all"
-    else:
-        today_baslangic = today - relativedelta(months=int(ay_sayisi))
-        day = today_baslangic.day
-        month = today_baslangic.month
-        year = today_baslangic.year
-
-        if int(day) < 10:
-            day = "0" + str(int(day))
-        else:
-            day = day
-
-        if int(month) < 10:
-            month = "0" + str(int(month))
-        else:
-            month = month
-        date_baslangic = str(year) + "-" + str(month) + "-" + str(day)
-        time_data = date_baslangic + " " + date
-
-
-if time=="Haftalık":
-    hafta_sayisi=st.sidebar.text_input("Son Kaç Haftayı Görmek İstiyorsunuz?")
-    if hafta_sayisi=="":
-        time_data="all"
-    else:
-        today_baslangic = today - relativedelta(days=int(hafta_sayisi)*7)
-        day = today_baslangic.day
-        month = today_baslangic.month
-        year = today_baslangic.year
-
-        if int(day) < 10:
-            day = "0" + str(int(day))
-        else:
-            day = day
-
-        if int(month) < 10:
-            month = "0" + str(int(month))
-        else:
-            month = month
-        date_baslangic = str(year) + "-" + str(month) + "-" + str(day)
-        time_data = date_baslangic + " " + date
-
-if time=="Günlük":
-    gun_sayisi=st.sidebar.text_input("Son Kaç Günü Görmek İstiyorsunuz?")
-    if gun_sayisi=="":
-        time_data="all"
-    else:
-        today_baslangic = today - relativedelta(days=int(gun_sayisi))
-        day = today_baslangic.day
-        month = today_baslangic.month
-        year = today_baslangic.year
-
-        if int(day) < 10:
-            day = "0" + str(int(day))
-        else:
-            day = day
-
-        if int(month) < 10:
-            month = "0" + str(int(month))
-        else:
-            month = month
-        date_baslangic = str(year) + "-" + str(month) + "-" + str(day)
-        time_data = date_baslangic + " " + date
-        print(date_baslangic)
+baslangic=st.sidebar.date_input("Başlangıç Tarihi Seçiniz",min_value=datetime.date(2004,1,1))
+bitis=st.sidebar.date_input("Bitiş Tarihi Seçiniz",min_value=datetime.date(2004,1,1))
+time_data=str(baslangic)+" "+str(bitis)
 
 grafik_turu=st.sidebar.radio("Kelime Grupları Aramaya Dahil Olacak Mı?",("Evet","Hayır"))
 
@@ -236,7 +160,7 @@ if grafik_turu=="Evet":
                 df4=check_trends(geo=geo, time_data=time_data)[keyword]
             placeholder.line_chart(data=df4, width=600, height=400)
         except:
-            placeholder.error("Google aramaları yeterli sayıda olmadığı için veriye ulaşılamadı.")
+            placeholder.error("Google aratmaları yeterli sayıda olmadığı için veriye ulaşılamadı.")
 
 else:
     kelime_gruplari = st.sidebar.multiselect("Kelime Grubu Seçiniz", list(keyword_dict.keys()))
@@ -296,5 +220,5 @@ else:
                 df4 = check_trends(geo=geo, time_data=time_data)[keyword]
             placeholder.line_chart(data=df4, width=600, height=400)
         except:
-            placeholder.error("Google aramaları yeterli sayıda olmadığı için veriye ulaşılamadı.")
+            placeholder.error("Google aratmaları yeterli sayıda olmadığı için veriye ulaşılamadı.")
 #endregion
