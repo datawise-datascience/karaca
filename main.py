@@ -236,7 +236,7 @@ if grafik_turu=="Evet":
                 df4=check_trends(geo=geo, time_data=time_data)[keyword]
             placeholder.line_chart(data=df4, width=600, height=400)
         except:
-            placeholder.error("Google aratmaları yeterli sayıda olmadığı için veriye ulaşılamadı.")
+            placeholder.error("Google aramaları yeterli sayıda olmadığı için veriye ulaşılamadı.")
 
 else:
     kelime_gruplari = st.sidebar.multiselect("Kelime Grubu Seçiniz", list(keyword_dict.keys()))
@@ -296,5 +296,5 @@ else:
                 df4 = check_trends(geo=geo, time_data=time_data)[keyword]
             placeholder.line_chart(data=df4, width=600, height=400)
         except:
-            placeholder.error("Google aratmaları yeterli sayıda olmadığı için veriye ulaşılamadı.")
+            placeholder.error("Google aramaları yeterli sayıda olmadığı için veriye ulaşılamadı.")
 #endregion
