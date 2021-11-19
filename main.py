@@ -37,6 +37,17 @@ for names in xl.sheet_names:
     df=pd.read_excel(keyword_file,sheet_name=names)
     keyword_dict[names]=list(df[df.columns[0]].values)
 
+#Türkçe ve İngilizce Kelimeleri Ekleme
+turkce_ingilizce_file=Path(__file__).parents[0] / 'Kategori İsimleri.xlsx'
+turkce_ingilizce_keywords=pd.read_excel(turkce_ingilizce_file)
+
+turkce_ingilizce={}
+for item in turkce_ingilizce_keywords["Ürün Grubu"].unique():
+    turkce_ingilizce[item]=list(turkce_ingilizce_keywords[turkce_ingilizce_keywords["Ürün Grubu"]==item]["Kelime"].values)
+
+for item in turkce_ingilizce.keys():
+    keyword_dict[item]=turkce_ingilizce[item]
+
 #endregion
 
 #region Streamlit
@@ -50,14 +61,12 @@ hide_streamlit_style = """
             footer {visibility: hidden;}
             </style>
             """
-st.markdown(hide_streamlit_style, unsafe_allow_html=True) 
+st.markdown(hide_streamlit_style, unsafe_allow_html=True)
 placeholder = st.empty()
 placeholder.info("Soldaki menüden kriterleri seçip 'Görseli Üret' butonuna tıklayınız.")
 
 #Sidebar
 #Yandaki menü kısmını oluşturuyoruz.
-
-st.sidebar.image("datawise.png", use_column_width=True)
 st.sidebar.write("Kriterler")
 
 ulke=st.sidebar.radio("Ülke",("Türkiye","Almanya"))
@@ -185,6 +194,7 @@ if grafik_turu=="Evet":
     except:
         pass
     gorsel=st.sidebar.button("Görseli Üret")
+    st.sidebar.image("datawise.png", use_column_width=True)
     if gorsel:
         try:
             if len(tum_kelimeler)>1:
@@ -244,6 +254,7 @@ else:
     except:
         pass
     gorsel = st.sidebar.button("Görseli Üret")
+    st.sidebar.image("datawise.png", use_column_width=True)
     if gorsel:
         try:
             if len(tum_kelimeler) > 1:
