@@ -110,13 +110,9 @@ if grafik_turu=="Evet":
     ekstra_kelime=st.sidebar.text_input("Ekstra Kelimeler:",help="Virgül ile kelimeleri ayırınız.",)
     ekstra_kelime = ekstra_kelime.split(",")
     ekstra_kelime = [x.strip(' ') for x in ekstra_kelime]
-    ekstra_kelime_save=pd.DataFrame(ekstra_kelime)
-    ekstra_kelime_save.to_excel("ekstra.xlsx")
     tum_kelimeler=kelime_gruplari
     tum_kelimeler+=keyword_item
     tum_kelimeler+=ekstra_kelime
-    ek=pd.read_excel("ekstra.xlsx")
-    st.write(ek)
     try:
         tum_kelimeler.remove("")
     except:
